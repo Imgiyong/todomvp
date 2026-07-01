@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoCheck - 프리미엄 할일 관리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: invert(0.5);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const CATEGORIES = ['전체', '업무', '개인', '학습'];
+
+        const getTodayString = () => new Date().toISOString().split('T')[0];
+
+        function App() {
+            const [tasks, setTasks] = useState(() => {
+                const savedTasks = localStorage.getItem('todoCheck_tasks');
+                return savedTasks ? JSON.parse(savedTasks) : [];
+            });
+            const [inputValue, setInputValue] = useState("");
+            const [dueDate, setDueDate] = useState(getTodayString());
+            const [selectedCategory, setSelectedCategory] = useState('업무');
+            const [activeFilter, setActiveFilter] = useState('전체');
+            const [deleteTargetId, setDeleteTargetId] = useState(null);
+
+            useEffect(() => {
+                localStorage.setItem('todoCheck_tasks', JSON.stringify(tasks));
+            }, [tasks]);
+
+            const addTask = () => {
+                if (inputValue.trim() === "") return;
+                const newTask = {
+                    id: Date.now(),
+                    text: inputValue,
+                    dueDate: dueDate,
+                    completed: false,
+                    category: selectedCategory
+                };
+                setTasks([newTask, ...tasks]);
+                setInputValue("");
+                setDueDate(getTodayString());
+            };
+
+            const toggleTask = (id) => {
+                setTasks(tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+            };
+
+            const deleteTask = () => {
+                setTasks(tasks.filter(t => t.id !== deleteTargetId));
+                setDeleteTargetId(null);
+            };
+
+            const filteredTasks = activeFilter === '전체'
+                ? tasks
+                : tasks.filter(t => t.category === activeFilter);
+
+            return (
+                <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
+                    <div className="p-8 pb-6 bg-gradient-to-br from-indigo-600 to-violet-700">
+                        <h1 className="text-3xl font-bold text-white tracking-tight">ToDoCheck</h1>
+                        <p className="text-indigo-100 opacity-90 mt-1 font-medium">
+                            {new Date().toLocaleDateString('ko-KR', {
+                                year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
+                            })}
+                        </p>
+                    </div>
+
+                    <div className="p-6">
+                        <div className="flex flex-col gap-2 mb-4">
+                            <div className="flex gap-2">
+                                <select
+                                    value={selectedCategory}
+                                    onChange={(e) => setSelectedCategory(e.target.value)}
+                                    className="bg-slate-50 border-2 border-slate-100 rounded-2xl px-3 py-3 outline-none focus:border-indigo-500 text-sm font-medium text-slate-600"
+                                >
+                                    {CATEGORIES.filter(c => c !== '전체').map(c => <option key={c} value={c}>{c}</option>)}
+                                </select>
+                                <input
+                                    className="flex-1 bg-slate-50 border-2 border-slate-100 rounded-2xl px-4 py-3 outline-none focus:border-indigo-500 transition-all text-slate-700"
+                                    value={inputValue}
+                                    onChange={(e) => setInputValue(e.target.value)}
+                                    onKeyDown={(e) => e.key === 'Enter' && addTask()}
+                                    placeholder="할일 입력..."
+                                />
+                            </div>
+                            <div className="flex gap-2 items-center">
+                                <label className="text-xs font-semibold text-slate-400 pl-1">기한:</label>
+                                <input
+                                    type="date"
+                                    value={dueDate}
+                                    onChange={(e) => setDueDate(e.target.value)}
+                                    className="flex-1 bg-slate-50 border-2 border-slate-100 rounded-2xl px-4 py-2 text-sm text-slate-600 outline-none focus:border-indigo-500 cursor-pointer"
+                                />
+                                <button onClick={addTask} className="bg-indigo-600 text-white px-6 py-2 rounded-2xl hover:bg-indigo-700 transition-all font-semibold text-sm">추가</button>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+                            {CATEGORIES.map(cat => (
+                                <button
+                                    key={cat}
+                                    onClick={() => setActiveFilter(cat)}
+                                    className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${activeFilter === cat ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
+                                >
+                                    {cat}
+                                </button>
+                            ))}
+                        </div>
+
+                        {filteredTasks.length === 0 ? (
+                            <div className="text-center py-10">
+                                <p className="text-slate-400">등록된 할일이 없습니다.</p>
+                            </div>
+                        ) : (
+                            <ul className="space-y-3">
+                                {filteredTasks.map(task => (
+                                    <li key={task.id} className="group flex items-center gap-3 p-4 bg-slate-50 rounded-2xl hover:bg-slate-100 transition-all border border-slate-100">
+                                        <input type="checkbox" checked={task.completed} onChange={() => toggleTask(task.id)} className="w-5 h-5 accent-indigo-600 cursor-pointer"/>
+                                        <div className="flex-1">
+                                            <p className={`transition-all ${task.completed ? 'line-through text-slate-400' : 'text-slate-700 font-medium'}`}>{task.text}</p>
+                                            <div className="flex gap-2 mt-1">
+                                                <span className="text-[10px] uppercase font-bold text-indigo-400 bg-indigo-50 px-2 py-0.5 rounded-md">{task.category}</span>
+                                                <span className="text-[10px] font-medium text-slate-400">기한: {task.dueDate}</span>
+                                            </div>
+                                        </div>
+                                        <button onClick={() => setDeleteTargetId(task.id)} className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500 transition-all">삭제</button>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+
+                    {deleteTargetId && (
+                        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                            <div className="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm">
+                                <h3 className="text-xl font-bold text-slate-800 mb-2">정말 삭제하시겠습니까?</h3>
+                                <div className="flex gap-3 mt-6">
+                                    <button onClick={() => setDeleteTargetId(null)} className="flex-1 py-3 bg-slate-100 rounded-2xl">취소</button>
+                                    <button onClick={deleteTask} className="flex-1 py-3 bg-red-500 text-white rounded-2xl">확인</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
