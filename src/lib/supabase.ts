@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { normalizeCategory, type TodoCategory } from '../types/todo'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
@@ -16,11 +17,14 @@ export interface TodoRow {
   created_at: string
 }
 
-export function rowToTodo(row: TodoRow) {
+export function rowToTodo(row: TodoRow, category: TodoCategory = 'general') {
   return {
     id: row.id,
     text: row.text,
     completed: row.is_done,
-    category: 'personal' as const,
+    category,
+    createdAt: row.created_at,
   }
 }
+
+export { normalizeCategory }

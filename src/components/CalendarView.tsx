@@ -1,129 +1,99 @@
 import { useMemo, useState } from 'react'
-import type { Todo, TodoCategory } from '../types/todo'
-import { CATEGORY_STYLES } from '../types/todo'
+import type { Todo } from '../types/todo'
 import {
-  formatDateLabel,
   formatMonthYear,
-  getCalendarDays,
-  parseDateKey,
+  formatSelectedDate,
+  getCalendarCells,
+  getWeekdayLabels,
   todayKey,
-  WEEKDAY_LABELS,
+  toDateKey,
 } from '../utils/date'
-import { TaskItem } from './TaskItem'
-import { SortableTaskList } from './SortableTaskList'
-import { TodoInput } from './TodoInput'
+import { DeleteDialog } from './DeleteDialog'
+import { StitchTaskItem } from './StitchTaskItem'
 
 interface CalendarViewProps {
   tasks: Todo[]
-  onAddTask: (text: string, category: TodoCategory, dueDate?: string) => void
   onToggle: (id: string) => void
-  onDelete: (id: string) => void
-  onUpdateDueDate?: (id: string, dueDate: string | undefined) => void
-  reorderTasks: (visibleIds: string[], fromIndex: number, toIndex: number) => void
-  defaultCategory?: TodoCategory
+  onDelete: (id: string) => Promise<boolean> | boolean
 }
 
-export function CalendarView({
-  tasks,
-  onAddTask,
-  onToggle,
-  onDelete,
-  onUpdateDueDate,
-  reorderTasks,
-  defaultCategory,
-}: CalendarViewProps) {
-  const today = todayKey()
-  const [selectedDate, setSelectedDate] = useState(today)
-  const [viewDate, setViewDate] = useState(() => parseDateKey(today))
+export function CalendarView({ tasks, onToggle, onDelete }: CalendarViewProps) {
+  const now = new Date()
+  const [viewYear, setViewYear] = useState(now.getFullYear())
+  const [viewMonth, setViewMonth] = useState(now.getMonth())
+  const [selectedDate, setSelectedDate] = useState(todayKey())
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null)
+  const [exitingId, setExitingId] = useState<string | null>(null)
 
-  const year = viewDate.getFullYear()
-  const month = viewDate.getMonth()
-  const calendarDays = useMemo(() => getCalendarDays(year, month), [year, month])
-
-  const tasksByDate = useMemo(() => {
-    const map = new Map<string, Todo[]>()
+  const taskDates = useMemo(() => {
+    const dates = new Set<string>()
     for (const task of tasks) {
-      if (!task.dueDate) continue
-      const list = map.get(task.dueDate) ?? []
-      list.push(task)
-      map.set(task.dueDate, list)
+      dates.add(toDateKey(task.createdAt))
     }
-    return map
+    return dates
   }, [tasks])
 
-  const selectedTasks = tasksByDate.get(selectedDate) ?? []
-  const selectedTaskIds = selectedTasks.map((t) => t.id)
+  const cells = useMemo(
+    () => getCalendarCells(viewYear, viewMonth),
+    [viewYear, viewMonth],
+  )
 
-  function handleReorder(fromIndex: number, toIndex: number) {
-    reorderTasks(selectedTaskIds, fromIndex, toIndex)
+  const selectedTasks = useMemo(
+    () => tasks.filter((task) => toDateKey(task.createdAt) === selectedDate),
+    [tasks, selectedDate],
+  )
+
+  function shiftMonth(delta: number) {
+    const next = new Date(viewYear, viewMonth + delta, 1)
+    setViewYear(next.getFullYear())
+    setViewMonth(next.getMonth())
   }
 
-  function goToPrevMonth() {
-    setViewDate(new Date(year, month - 1, 1))
+  async function handleConfirmDelete() {
+    if (!deleteTargetId) return
+
+    const id = deleteTargetId
+    setDeleteTargetId(null)
+    setExitingId(id)
+
+    window.setTimeout(async () => {
+      await onDelete(id)
+      setExitingId(null)
+    }, 200)
   }
 
-  function goToNextMonth() {
-    setViewDate(new Date(year, month + 1, 1))
-  }
-
-  function goToToday() {
-    const now = parseDateKey(todayKey())
-    setViewDate(now)
-    setSelectedDate(todayKey())
-  }
+  const today = todayKey()
 
   return (
-    <main className="mx-auto max-w-[800px] px-gutter pt-md pb-32">
-      <section className="mb-lg">
-        <h2 className="text-headline-lg-mobile font-bold text-on-surface md:text-headline-lg">
-          캘린더
-        </h2>
-        <p className="mt-base text-body-md text-on-surface-variant">
-          날짜별로 할 일을 확인하고 관리하세요.
-        </p>
-      </section>
-
-      <div className="mb-lg rounded-xl bg-surface-container-lowest p-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)]">
-        <div className="mb-md flex items-center justify-between">
+    <div className="space-y-6">
+      <section className="rounded-xl border border-outline-variant/30 bg-surface-container-lowest p-4 task-card-shadow">
+        <div className="mb-4 flex items-center justify-between">
           <button
             type="button"
-            onClick={goToPrevMonth}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container"
+            onClick={() => shiftMonth(-1)}
+            className="rounded-full p-2 text-on-surface-variant transition-colors hover:bg-surface-container-low active:scale-95"
             aria-label="이전 달"
           >
             <span className="material-symbols-outlined">chevron_left</span>
           </button>
-
-          <div className="flex items-center gap-sm">
-            <h3 className="text-headline-md font-semibold text-on-surface">
-              {formatMonthYear(year, month)}
-            </h3>
-            <button
-              type="button"
-              onClick={goToToday}
-              className="rounded-full bg-primary-fixed px-2.5 py-1 text-label-sm font-medium text-on-primary-fixed transition-opacity hover:opacity-80"
-            >
-              오늘
-            </button>
-          </div>
-
+          <h2 className="text-headline-md font-semibold text-on-surface">
+            {formatMonthYear(viewYear, viewMonth)}
+          </h2>
           <button
             type="button"
-            onClick={goToNextMonth}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container"
+            onClick={() => shiftMonth(1)}
+            className="rounded-full p-2 text-on-surface-variant transition-colors hover:bg-surface-container-low active:scale-95"
             aria-label="다음 달"
           >
             <span className="material-symbols-outlined">chevron_right</span>
           </button>
         </div>
 
-        <div className="mb-1 grid grid-cols-7 gap-1">
-          {WEEKDAY_LABELS.map((label, index) => (
+        <div className="mb-2 grid grid-cols-7 gap-1">
+          {getWeekdayLabels().map((label) => (
             <div
               key={label}
-              className={`py-1 text-center text-label-sm font-medium ${
-                index === 0 ? 'text-error' : index === 6 ? 'text-primary' : 'text-on-surface-variant'
-              }`}
+              className="py-1 text-center text-label-md text-on-surface-variant"
             >
               {label}
             </div>
@@ -131,103 +101,69 @@ export function CalendarView({
         </div>
 
         <div className="grid grid-cols-7 gap-1">
-          {calendarDays.map((day) => {
-            const dayTasks = tasksByDate.get(day.dateKey) ?? []
-            const isSelected = selectedDate === day.dateKey
-            const dayOfWeek = day.date.getDay()
+          {cells.map((cell, index) => {
+            if (!cell) {
+              return <div key={`empty-${index}`} className="aspect-square" />
+            }
+
+            const { day, dateKey } = cell
+            const hasTasks = taskDates.has(dateKey)
+            const isSelected = selectedDate === dateKey
+            const isToday = today === dateKey
 
             return (
               <button
-                key={day.dateKey}
+                key={dateKey}
                 type="button"
-                onClick={() => setSelectedDate(day.dateKey)}
-                className={`relative flex min-h-[52px] flex-col items-center rounded-lg p-1 transition-all sm:min-h-[64px] ${
-                  isSelected
-                    ? 'bg-primary text-on-primary shadow-sm'
-                    : day.isToday
-                      ? 'bg-primary-fixed/50 ring-2 ring-primary ring-inset'
-                      : 'hover:bg-surface-container'
-                } ${!day.isCurrentMonth ? 'opacity-40' : ''}`}
+                onClick={() => setSelectedDate(dateKey)}
+                className={`flex aspect-square items-center justify-center rounded-full text-body-md transition-all active:scale-95 ${
+                  hasTasks
+                    ? 'bg-primary font-semibold text-on-primary'
+                    : isToday
+                      ? 'font-semibold text-primary ring-2 ring-primary'
+                      : 'text-on-surface hover:bg-surface-container-low'
+                } ${isSelected && !hasTasks ? 'ring-2 ring-primary ring-offset-2' : ''} ${
+                  isSelected && hasTasks ? 'ring-2 ring-primary-container ring-offset-2' : ''
+                }`}
+                aria-label={`${day}일${hasTasks ? ', 할일 있음' : ''}`}
+                aria-pressed={isSelected}
               >
-                <span
-                  className={`text-label-sm font-medium ${
-                    isSelected
-                      ? 'text-on-primary'
-                      : dayOfWeek === 0
-                        ? 'text-error'
-                        : dayOfWeek === 6
-                          ? 'text-primary'
-                          : 'text-on-surface'
-                  }`}
-                >
-                  {day.date.getDate()}
-                </span>
-
-                {dayTasks.length > 0 && (
-                  <div className="mt-0.5 flex max-w-full flex-wrap justify-center gap-0.5 px-0.5">
-                    {dayTasks.slice(0, 3).map((task) => (
-                      <span
-                        key={task.id}
-                        className={`h-1.5 w-1.5 rounded-full ${
-                          isSelected
-                            ? 'bg-on-primary'
-                            : task.completed
-                              ? 'bg-outline'
-                              : CATEGORY_STYLES[task.category].activeBg
-                        }`}
-                      />
-                    ))}
-                    {dayTasks.length > 3 && (
-                      <span
-                        className={`text-[9px] leading-none ${isSelected ? 'text-on-primary' : 'text-on-surface-variant'}`}
-                      >
-                        +{dayTasks.length - 3}
-                      </span>
-                    )}
-                  </div>
-                )}
+                {day}
               </button>
             )
           })}
         </div>
-      </div>
-
-      <section className="mb-md">
-        <h3 className="mb-sm text-headline-md font-semibold text-on-surface">
-          {formatDateLabel(selectedDate)}
-        </h3>
-        <TodoInput
-          onAddTask={onAddTask}
-          placeholder="이 날짜에 할 일 추가..."
-          variant="calendar"
-          defaultCategory={defaultCategory}
-          defaultDueDate={selectedDate}
-          showDatePicker
-        />
       </section>
 
-      <section className="space-y-sm">
+      <section>
+        <h3 className="mb-3 text-body-lg font-semibold text-on-surface">
+          {formatSelectedDate(selectedDate)}
+        </h3>
+
         {selectedTasks.length === 0 ? (
-          <div className="py-10 text-center opacity-50">
-            <span className="material-symbols-outlined mb-sm text-[48px] text-primary">
-              event_available
-            </span>
-            <p className="text-body-md text-on-surface-variant">이 날짜에 예정된 할 일이 없습니다.</p>
-          </div>
+          <p className="rounded-xl border border-outline-variant/30 bg-surface-container-low px-4 py-6 text-center text-body-md text-on-surface-variant">
+            이 날짜에 등록된 할일이 없습니다.
+          </p>
         ) : (
-          <SortableTaskList taskIds={selectedTaskIds} onReorder={handleReorder}>
-            {(index) => (
-              <TaskItem
-                task={selectedTasks[index]}
-                variant="all"
+          <div className="space-y-3">
+            {selectedTasks.map((task) => (
+              <StitchTaskItem
+                key={task.id}
+                task={task}
                 onToggle={onToggle}
-                onDelete={onDelete}
-                onUpdateDueDate={onUpdateDueDate}
+                onDeleteRequest={setDeleteTargetId}
+                exiting={exitingId === task.id}
               />
-            )}
-          </SortableTaskList>
+            ))}
+          </div>
         )}
       </section>
-    </main>
+
+      <DeleteDialog
+        open={deleteTargetId !== null}
+        onCancel={() => setDeleteTargetId(null)}
+        onConfirm={() => void handleConfirmDelete()}
+      />
+    </div>
   )
 }

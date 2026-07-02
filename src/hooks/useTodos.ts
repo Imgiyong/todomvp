@@ -1,48 +1,51 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { rowToTodo, supabase, type TodoRow } from '../lib/supabase'
 import {
-  type CategoryFilter,
+  TODO_CATEGORIES,
+  type AppTab,
   type Todo,
   type TodoCategory,
-  type ViewFilter,
 } from '../types/todo'
 
-const FILTER_STORAGE_KEY = 'simple_todo_filter'
-const CATEGORY_FILTER_STORAGE_KEY = 'simple_todo_category_filter'
+const TAB_STORAGE_KEY = 'simple_todo_tab'
+const FILTER_CATEGORY_STORAGE_KEY = 'simple_todo_filter_category'
 const LAST_CATEGORY_STORAGE_KEY = 'simple_todo_last_category'
+const DARK_MODE_STORAGE_KEY = 'simple_todo_dark_mode'
 
-function loadFilter(): ViewFilter {
-  if (typeof window === 'undefined') return 'all'
-  const saved = localStorage.getItem(FILTER_STORAGE_KEY)
-  if (saved === 'all' || saved === 'active' || saved === 'completed' || saved === 'calendar') {
-    return saved
-  }
-  return 'all'
+function loadTab(): AppTab {
+  if (typeof window === 'undefined') return 'tasks'
+  const saved = localStorage.getItem(TAB_STORAGE_KEY)
+  if (saved === 'tasks' || saved === 'completed' || saved === 'calendar') return saved
+  return 'tasks'
 }
 
-function loadCategoryFilter(): CategoryFilter {
-  if (typeof window === 'undefined') return 'all'
-  const saved = localStorage.getItem(CATEGORY_FILTER_STORAGE_KEY)
-  if (saved === 'all' || saved === 'work' || saved === 'personal' || saved === 'study' || saved === 'hobby') {
-    return saved
-  }
-  return 'all'
+function loadFilterCategory(): TodoCategory | null {
+  if (typeof window === 'undefined') return null
+  const saved = localStorage.getItem(FILTER_CATEGORY_STORAGE_KEY)
+  if (saved === 'general' || saved === 'work' || saved === 'personal') return saved
+  return null
 }
 
 function loadLastCategory(): TodoCategory {
-  if (typeof window === 'undefined') return 'personal'
+  if (typeof window === 'undefined') return 'general'
   const saved = localStorage.getItem(LAST_CATEGORY_STORAGE_KEY)
-  if (saved === 'work' || saved === 'personal' || saved === 'study' || saved === 'hobby') return saved
-  return 'personal'
+  if (saved === 'general' || saved === 'work' || saved === 'personal') return saved
+  return 'general'
+}
+
+function loadDarkMode(): boolean {
+  if (typeof window === 'undefined') return false
+  return localStorage.getItem(DARK_MODE_STORAGE_KEY) === 'true'
 }
 
 export function useTodos() {
   const [tasks, setTasks] = useState<Todo[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [viewFilter, setViewFilter] = useState<ViewFilter>(() => loadFilter())
-  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>(() => loadCategoryFilter())
+  const [activeTab, setActiveTab] = useState<AppTab>(() => loadTab())
+  const [filterCategory, setFilterCategory] = useState<TodoCategory | null>(() => loadFilterCategory())
   const [lastCategory, setLastCategory] = useState<TodoCategory>(() => loadLastCategory())
+  const [darkMode, setDarkMode] = useState<boolean>(() => loadDarkMode())
 
   useEffect(() => {
     let cancelled = false
@@ -62,7 +65,7 @@ export function useTodos() {
         setError(fetchError.message)
         setTasks([])
       } else {
-        setTasks((data as TodoRow[]).map(rowToTodo))
+        setTasks((data as TodoRow[]).map((row) => rowToTodo(row)))
       }
 
       setLoading(false)
@@ -76,49 +79,74 @@ export function useTodos() {
   }, [])
 
   useEffect(() => {
-    localStorage.setItem(FILTER_STORAGE_KEY, viewFilter)
-  }, [viewFilter])
+    document.documentElement.classList.toggle('dark', darkMode)
+  }, [darkMode])
 
   useEffect(() => {
-    localStorage.setItem(CATEGORY_FILTER_STORAGE_KEY, categoryFilter)
-  }, [categoryFilter])
+    localStorage.setItem(TAB_STORAGE_KEY, activeTab)
+  }, [activeTab])
+
+  useEffect(() => {
+    if (filterCategory) {
+      localStorage.setItem(FILTER_CATEGORY_STORAGE_KEY, filterCategory)
+    } else {
+      localStorage.removeItem(FILTER_CATEGORY_STORAGE_KEY)
+    }
+  }, [filterCategory])
 
   useEffect(() => {
     localStorage.setItem(LAST_CATEGORY_STORAGE_KEY, lastCategory)
   }, [lastCategory])
 
-  const filteredTasks = useMemo(() => {
-    let result = tasks
+  useEffect(() => {
+    localStorage.setItem(DARK_MODE_STORAGE_KEY, String(darkMode))
+  }, [darkMode])
 
-    switch (viewFilter) {
-      case 'active':
-        result = result.filter((t) => !t.completed)
-        break
-      case 'completed':
-        result = result.filter((t) => t.completed)
-        break
-      case 'calendar':
-        result = result.filter((t) => Boolean(t.dueDate))
-        break
-    }
+  const visibleTasks = useMemo(() => {
+    const byTab =
+      activeTab === 'completed'
+        ? tasks.filter((t) => t.completed)
+        : tasks.filter((t) => !t.completed)
 
-    if (categoryFilter !== 'all') {
-      result = result.filter((t) => t.category === categoryFilter)
-    }
+    if (!filterCategory) return byTab
+    return byTab.filter((t) => t.category === filterCategory)
+  }, [tasks, filterCategory, activeTab])
 
-    return result
-  }, [tasks, viewFilter, categoryFilter])
+  const progress = useMemo(() => {
+    if (tasks.length === 0) return 0
+    const done = tasks.filter((t) => t.completed).length
+    return Math.round((done / tasks.length) * 100)
+  }, [tasks])
 
-  const activeCount = useMemo(
+  const categoryCounts = useMemo(
     () =>
-      tasks.filter(
-        (t) => !t.completed && (categoryFilter === 'all' || t.category === categoryFilter),
-      ).length,
-    [tasks, categoryFilter],
+      TODO_CATEGORIES.map(({ id, label }) => ({
+        id,
+        label,
+        total: tasks.filter((t) => t.category === id).length,
+        done: tasks.filter((t) => t.category === id && t.completed).length,
+      })),
+    [tasks],
   )
 
+  const setTab = useCallback((tab: AppTab) => {
+    setActiveTab(tab)
+    if (tab !== 'tasks') {
+      setFilterCategory(null)
+    }
+  }, [])
+
+  const selectCategoryFilter = useCallback((category: TodoCategory) => {
+    setFilterCategory(category)
+    setActiveTab('tasks')
+  }, [])
+
+  const clearCategoryFilter = useCallback(() => {
+    setFilterCategory(null)
+  }, [])
+
   const addTask = useCallback(
-    async (text: string, category: TodoCategory = lastCategory, dueDate?: string) => {
+    async (text: string, category: TodoCategory = lastCategory) => {
       const trimmed = text.trim()
       if (!trimmed) return false
 
@@ -135,110 +163,98 @@ export function useTodos() {
         return false
       }
 
-      const todo = rowToTodo(data as TodoRow)
-      setTasks((prev) => [
-        ...prev,
-        {
-          ...todo,
-          category,
-          dueDate,
-        },
-      ])
+      const todo = rowToTodo(data as TodoRow, category)
+      setTasks((prev) => [...prev, todo])
       return true
     },
     [lastCategory],
   )
 
-  const toggleTask = useCallback(async (id: string) => {
-    const task = tasks.find((t) => t.id === id)
-    if (!task) return
+  const toggleTask = useCallback(
+    async (id: string) => {
+      const task = tasks.find((t) => t.id === id)
+      if (!task) return
 
-    const nextDone = !task.completed
+      const nextDone = !task.completed
 
-    const { error: updateError } = await supabase
-      .from('todos')
-      .update({ is_done: nextDone })
-      .eq('id', id)
+      const { error: updateError } = await supabase
+        .from('todos')
+        .update({ is_done: nextDone })
+        .eq('id', id)
 
-    if (updateError) {
-      setError(updateError.message)
-      return
-    }
+      if (updateError) {
+        setError(updateError.message)
+        return
+      }
 
-    setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, completed: nextDone } : t)),
-    )
-  }, [tasks])
+      setTasks((prev) =>
+        prev.map((t) => (t.id === id ? { ...t, completed: nextDone } : t)),
+      )
+    },
+    [tasks],
+  )
 
   const deleteTask = useCallback(async (id: string) => {
     const { error: deleteError } = await supabase.from('todos').delete().eq('id', id)
 
     if (deleteError) {
       setError(deleteError.message)
-      return
+      return false
     }
 
     setTasks((prev) => prev.filter((t) => t.id !== id))
-  }, [])
-
-  const updateDueDate = useCallback((id: string, dueDate: string | undefined) => {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, dueDate } : t)),
-    )
+    return true
   }, [])
 
   const clearCompleted = useCallback(async () => {
     const completedIds = tasks.filter((t) => t.completed).map((t) => t.id)
-    if (completedIds.length === 0) return
+    if (completedIds.length === 0) return 0
 
     const { error: deleteError } = await supabase.from('todos').delete().in('id', completedIds)
 
     if (deleteError) {
       setError(deleteError.message)
-      return
+      return 0
     }
 
     setTasks((prev) => prev.filter((t) => !t.completed))
+    return completedIds.length
   }, [tasks])
 
-  const reorderTasks = useCallback((visibleIds: string[], fromIndex: number, toIndex: number) => {
-    if (fromIndex === toIndex || fromIndex < 0 || toIndex < 0) return
-    if (fromIndex >= visibleIds.length || toIndex >= visibleIds.length) return
+  const clearAll = useCallback(async () => {
+    if (tasks.length === 0) return 0
 
-    const newOrder = [...visibleIds]
-    const [moved] = newOrder.splice(fromIndex, 1)
-    newOrder.splice(toIndex, 0, moved)
+    const allIds = tasks.map((t) => t.id)
+    const { error: deleteError } = await supabase.from('todos').delete().in('id', allIds)
 
-    setTasks((prev) => {
-      const visibleSet = new Set(newOrder)
-      const byId = new Map(prev.map((t) => [t.id, t]))
-      const queue = [...newOrder]
-      return prev.map((task) => {
-        if (visibleSet.has(task.id)) {
-          const nextId = queue.shift()!
-          return byId.get(nextId)!
-        }
-        return task
-      })
-    })
-  }, [])
+    if (deleteError) {
+      setError(deleteError.message)
+      return 0
+    }
+
+    setTasks([])
+    return allIds.length
+  }, [tasks])
 
   return {
     tasks,
-    filteredTasks,
-    viewFilter,
-    categoryFilter,
+    visibleTasks,
+    activeTab,
+    filterCategory,
     lastCategory,
-    activeCount,
+    darkMode,
+    progress,
+    categoryCounts,
     loading,
     error,
-    setViewFilter,
-    setCategoryFilter,
+    setTab,
+    setDarkMode,
+    selectCategoryFilter,
+    clearCategoryFilter,
     addTask,
     toggleTask,
     deleteTask,
-    updateDueDate,
-    reorderTasks,
     clearCompleted,
+    clearAll,
   }
 }

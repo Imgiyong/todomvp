@@ -1,0 +1,160 @@
+﻿{
+    "name":  "projects/4506347470105454246",
+    "title":  "TodoMVP",
+    "visibility":  "PRIVATE",
+    "createTime":  "2026-07-02T12:11:35.599534Z",
+    "updateTime":  "2026-07-02T12:18:12.197756Z",
+    "projectType":  "TEXT_TO_UI_PRO",
+    "thumbnailScreenshot":  {
+                                "name":  "projects/4506347470105454246/files/cf287dd032924f74b812b99f688d4dea",
+                                "downloadUrl":  "https://lh3.googleusercontent.com/aida/AP1WRLsNuGPB1BeyveSb5fxdtmAmlPx5HS_Z65wPva5V1dolWJLugxv6iVzhpWgCgsR-h3bYUZmQUuYbWkKFEdFq5onqlY06fZGR7FR5OHXpd-U9k1a3jEGcNAsYy2PPXC_lWsI8e-tg5UcTrfXQ6yyopzdJWgdxw4FOvwegsTwgZtmPfWHU6sgBJ5GiZXl7bVCCwqCGAVZJ5Ja8xms6jGvznHVJsK7H5EUKsr5nqHRmUtPq8dtgtSeihbV0WA"
+                            },
+    "origin":  "STITCH",
+    "deviceType":  "MOBILE",
+    "designTheme":  {
+                        "colorMode":  "LIGHT",
+                        "font":  "INTER",
+                        "roundness":  "ROUND_EIGHT",
+                        "customColor":  "#3b82f6",
+                        "headlineFont":  "INTER",
+                        "bodyFont":  "INTER",
+                        "labelFont":  "INTER",
+                        "namedColors":  {
+                                            "background":  "#f8f9ff",
+                                            "error":  "#ba1a1a",
+                                            "error_container":  "#ffdad6",
+                                            "inverse_on_surface":  "#eaf1ff",
+                                            "inverse_primary":  "#adc6ff",
+                                            "inverse_surface":  "#27313f",
+                                            "on_background":  "#121c2a",
+                                            "on_error":  "#ffffff",
+                                            "on_error_container":  "#93000a",
+                                            "on_primary":  "#ffffff",
+                                            "on_primary_container":  "#fefcff",
+                                            "on_primary_fixed":  "#001a42",
+                                            "on_primary_fixed_variant":  "#004395",
+                                            "on_secondary":  "#ffffff",
+                                            "on_secondary_container":  "#405682",
+                                            "on_secondary_fixed":  "#001a42",
+                                            "on_secondary_fixed_variant":  "#304671",
+                                            "on_surface":  "#121c2a",
+                                            "on_surface_variant":  "#424754",
+                                            "on_tertiary":  "#ffffff",
+                                            "on_tertiary_container":  "#fffbff",
+                                            "on_tertiary_fixed":  "#311400",
+                                            "on_tertiary_fixed_variant":  "#723600",
+                                            "outline":  "#727785",
+                                            "outline_variant":  "#c2c6d6",
+                                            "primary":  "#0058be",
+                                            "primary_container":  "#2170e4",
+                                            "primary_fixed":  "#d8e2ff",
+                                            "primary_fixed_dim":  "#adc6ff",
+                                            "secondary":  "#495e8a",
+                                            "secondary_container":  "#b6ccff",
+                                            "secondary_fixed":  "#d8e2ff",
+                                            "secondary_fixed_dim":  "#b1c6f9",
+                                            "surface":  "#f8f9ff",
+                                            "surface_bright":  "#f8f9ff",
+                                            "surface_container":  "#e6eeff",
+                                            "surface_container_high":  "#dee9fc",
+                                            "surface_container_highest":  "#d9e3f6",
+                                            "surface_container_low":  "#eff4ff",
+                                            "surface_container_lowest":  "#ffffff",
+                                            "surface_dim":  "#d0dbed",
+                                            "surface_tint":  "#005ac2",
+                                            "surface_variant":  "#d9e3f6",
+                                            "tertiary":  "#924700",
+                                            "tertiary_container":  "#b75b00",
+                                            "tertiary_fixed":  "#ffdcc6",
+                                            "tertiary_fixed_dim":  "#ffb786"
+                                        },
+                        "designMd":  "---\nname: Azure Clarity\ncolors:\n  surface: \u0027#f8f9ff\u0027\n  surface-dim: \u0027#d0dbed\u0027\n  surface-bright: \u0027#f8f9ff\u0027\n  surface-container-lowest: \u0027#ffffff\u0027\n  surface-container-low: \u0027#eff4ff\u0027\n  surface-container: \u0027#e6eeff\u0027\n  surface-container-high: \u0027#dee9fc\u0027\n  surface-container-highest: \u0027#d9e3f6\u0027\n  on-surface: \u0027#121c2a\u0027\n  on-surface-variant: \u0027#424754\u0027\n  inverse-surface: \u0027#27313f\u0027\n  inverse-on-surface: \u0027#eaf1ff\u0027\n  outline: \u0027#727785\u0027\n  outline-variant: \u0027#c2c6d6\u0027\n  surface-tint: \u0027#005ac2\u0027\n  primary: \u0027#0058be\u0027\n  on-primary: \u0027#ffffff\u0027\n  primary-container: \u0027#2170e4\u0027\n  on-primary-container: \u0027#fefcff\u0027\n  inverse-primary: \u0027#adc6ff\u0027\n  secondary: \u0027#495e8a\u0027\n  on-secondary: \u0027#ffffff\u0027\n  secondary-container: \u0027#b6ccff\u0027\n  on-secondary-container: \u0027#405682\u0027\n  tertiary: \u0027#924700\u0027\n  on-tertiary: \u0027#ffffff\u0027\n  tertiary-container: \u0027#b75b00\u0027\n  on-tertiary-container: \u0027#fffbff\u0027\n  error: \u0027#ba1a1a\u0027\n  on-error: \u0027#ffffff\u0027\n  error-container: \u0027#ffdad6\u0027\n  on-error-container: \u0027#93000a\u0027\n  primary-fixed: \u0027#d8e2ff\u0027\n  primary-fixed-dim: \u0027#adc6ff\u0027\n  on-primary-fixed: \u0027#001a42\u0027\n  on-primary-fixed-variant: \u0027#004395\u0027\n  secondary-fixed: \u0027#d8e2ff\u0027\n  secondary-fixed-dim: \u0027#b1c6f9\u0027\n  on-secondary-fixed: \u0027#001a42\u0027\n  on-secondary-fixed-variant: \u0027#304671\u0027\n  tertiary-fixed: \u0027#ffdcc6\u0027\n  tertiary-fixed-dim: \u0027#ffb786\u0027\n  on-tertiary-fixed: \u0027#311400\u0027\n  on-tertiary-fixed-variant: \u0027#723600\u0027\n  background: \u0027#f8f9ff\u0027\n  on-background: \u0027#121c2a\u0027\n  surface-variant: \u0027#d9e3f6\u0027\ntypography:\n  headline-lg:\n    fontFamily: Inter\n    fontSize: 28px\n    fontWeight: \u0027700\u0027\n    lineHeight: 34px\n    letterSpacing: -0.02em\n  headline-md:\n    fontFamily: Inter\n    fontSize: 22px\n    fontWeight: \u0027600\u0027\n    lineHeight: 28px\n    letterSpacing: -0.01em\n  body-lg:\n    fontFamily: Inter\n    fontSize: 16px\n    fontWeight: \u0027400\u0027\n    lineHeight: 24px\n  body-md:\n    fontFamily: Inter\n    fontSize: 14px\n    fontWeight: \u0027400\u0027\n    lineHeight: 20px\n  label-md:\n    fontFamily: Inter\n    fontSize: 12px\n    fontWeight: \u0027600\u0027\n    lineHeight: 16px\n    letterSpacing: 0.05em\n  label-sm:\n    fontFamily: Inter\n    fontSize: 11px\n    fontWeight: \u0027500\u0027\n    lineHeight: 14px\nrounded:\n  sm: 0.25rem\n  DEFAULT: 0.5rem\n  md: 0.75rem\n  lg: 1rem\n  xl: 1.5rem\n  full: 9999px\nspacing:\n  container-margin: 1rem\n  stack-gap: 0.75rem\n  inline-gap: 0.5rem\n  section-padding: 1.5rem\n---\n\n## Brand \u0026 Style\n\nThis design system focuses on cognitive ease and task completion through a **Minimalist** and **Corporate Modern** aesthetic. The target audience includes busy professionals and students who require a distraction-free environment to manage their daily commitments. \n\nThe UI should evoke a sense of calm productivity. By utilizing expansive whitespace, the design prioritizes content over container, ensuring that the user\u0027s tasks are the focal point. The aesthetic is clean and functional, avoiding unnecessary ornamentation to maintain a high level of utility and speed on mobile devices.\n\n## Colors\n\nThe palette is anchored by a white background to maximize contrast and clarity. \n\n- **Primary Blue (#3B82F6):** Used for primary actions, active states, and brand reinforcement. It represents reliability and progress.\n- **Error Red (#EF4444):** Reserved exclusively for destructive actions like deleting tasks or critical validation errors.\n- **Neutrals:** A scale of cool grays is used for secondary text and borders.\n- **Surface:** A very light gray is used for subtle background differentiation in lists or grouped elements.\n\n## Typography\n\nThe design system utilizes **Inter** for its exceptional legibility on mobile screens. The typographic hierarchy is structured to guide the eye from page titles to task descriptions and metadata.\n\n- **Headlines:** Use tighter letter spacing and heavier weights to create a strong visual anchor.\n- **Body:** Standardized at 16px for optimal readability on mobile devices, ensuring users can quickly scan their todo list.\n- **Labels:** Used for categories, dates, or status indicators, employing uppercase styles to differentiate from interactive task text.\n\n## Layout \u0026 Spacing\n\nThis design system uses a **Fluid Grid** optimized for mobile viewports. The spacing logic follows a 4px baseline shift to maintain mathematical consistency.\n\n- **Margins:** A standard 16px (1rem) margin is applied to the left and right of the screen container.\n- **Task Spacing:** Tasks are separated by 12px (0.75rem) to balance density with tappability.\n- **Touch Targets:** All interactive elements maintain a minimum 44x44px hit area to ensure accessibility.\n\n## Elevation \u0026 Depth\n\nVisual hierarchy is established through **Ambient Shadows** and tonal layering. \n\n- **Level 0 (Background):** Pure white (#FFFFFF).\n- **Level 1 (Task Cards):** Cards sit on the background with a very soft, diffused shadow (0px 4px 12px rgba(0, 0, 0, 0.05)) to suggest they are interactable and separable.\n- **Level 2 (Floating Action Button):** The \"Add\" button uses a more pronounced shadow to indicate it sits above the scrollable content (0px 8px 20px rgba(59, 130, 246, 0.3)).\n\n## Shapes\n\nThe shape language is friendly and modern. \n\n- **Cards:** Use a 12px-16px radius to soften the interface and make the list items feel approachable.\n- **Checkboxes:** Defined as perfect circles to provide a distinct visual contrast to the rectangular task cards.\n- **Inputs:** Use standard rounded corners (8px) to signify a functional field.\n\n## Components\n\n### Buttons\nThe primary \"Add Task\" button is a Floating Action Button (FAB) or a full-width bottom button. It uses the primary blue background with white text and a bold weight.\n\n### Checkboxes\nCircular elements with a 2px border. When checked, they fill with the primary blue and show a white checkmark. Completed tasks trigger a transition where the text color shifts to a light gray and receives a strikethrough.\n\n### Task Cards\nCard containers have a white background, a 1px subtle gray border (#F3F4F6), and the defined ambient shadow. Content within is padded by 16px on all sides.\n\n### Input Fields\nClean, outlined text fields with a 1px border (#E5E7EB). On focus, the border transitions to the primary blue with a subtle 2px outer glow.\n\n### Chips/Tags\nSmall, rounded badges used for task categories (e.g., \"Work\", \"Personal\"). They use a desaturated version of the category color with high-contrast text.\n\n### Empty State\nA centered illustration or icon with a `headline-md` title and `body-md` description, using plenty of whitespace to encourage the first \"Add\" action.",
+                        "colorVariant":  "FIDELITY",
+                        "overridePrimaryColor":  "#3b82f6",
+                        "overrideNeutralColor":  "#1f2937",
+                        "spacingScale":  2,
+                        "typography":  {
+                                           "body-lg":  {
+                                                           "fontFamily":  "Inter",
+                                                           "fontSize":  "16px",
+                                                           "fontWeight":  "400",
+                                                           "lineHeight":  "24px"
+                                                       },
+                                           "body-md":  {
+                                                           "fontFamily":  "Inter",
+                                                           "fontSize":  "14px",
+                                                           "fontWeight":  "400",
+                                                           "lineHeight":  "20px"
+                                                       },
+                                           "headline-lg":  {
+                                                               "fontFamily":  "Inter",
+                                                               "fontSize":  "28px",
+                                                               "fontWeight":  "700",
+                                                               "lineHeight":  "34px",
+                                                               "letterSpacing":  "-0.02em"
+                                                           },
+                                           "headline-md":  {
+                                                               "fontFamily":  "Inter",
+                                                               "fontSize":  "22px",
+                                                               "fontWeight":  "600",
+                                                               "lineHeight":  "28px",
+                                                               "letterSpacing":  "-0.01em"
+                                                           },
+                                           "label-md":  {
+                                                            "fontFamily":  "Inter",
+                                                            "fontSize":  "12px",
+                                                            "fontWeight":  "600",
+                                                            "lineHeight":  "16px",
+                                                            "letterSpacing":  "0.05em"
+                                                        },
+                                           "label-sm":  {
+                                                            "fontFamily":  "Inter",
+                                                            "fontSize":  "11px",
+                                                            "fontWeight":  "500",
+                                                            "lineHeight":  "14px"
+                                                        }
+                                       },
+                        "spacing":  {
+                                        "container-margin":  "1rem",
+                                        "inline-gap":  "0.5rem",
+                                        "section-padding":  "1.5rem",
+                                        "stack-gap":  "0.75rem"
+                                    },
+                        "headlineFontFamily":  "Inter",
+                        "bodyFontFamily":  "Inter",
+                        "labelFontFamily":  "Inter"
+                    },
+    "screenInstances":  [
+                            {
+                                "id":  "09cd822484d548b3a679c319414a0083",
+                                "sourceScreen":  "projects/4506347470105454246/screens/09cd822484d548b3a679c319414a0083",
+                                "x":  1480,
+                                "width":  390,
+                                "height":  390
+                            },
+                            {
+                                "id":  "16d7b2a1b826448bb8d4dc42b803d194",
+                                "sourceScreen":  "projects/4506347470105454246/screens/16d7b2a1b826448bb8d4dc42b803d194",
+                                "x":  1024,
+                                "width":  390,
+                                "height":  884
+                            },
+                            {
+                                "id":  "94a1b383b71a4f8c8757b5b8fd606c6d",
+                                "sourceScreen":  "projects/4506347470105454246/screens/94a1b383b71a4f8c8757b5b8fd606c6d",
+                                "x":  1934,
+                                "width":  390,
+                                "height":  884
+                            },
+                            {
+                                "id":  "assets_94eaa6b7c0384cdcb950323eb0a7e995",
+                                "width":  960,
+                                "height":  540,
+                                "sourceAsset":  "assets/94eaa6b7c0384cdcb950323eb0a7e995",
+                                "type":  "DESIGN_SYSTEM_INSTANCE"
+                            }
+                        ],
+    "metadata":  {
+                     "userRole":  "OWNER"
+                 }
+}

@@ -1,0 +1,40 @@
+﻿{
+    "projectTitle":  "TodoMVP",
+    "projectId":  "4506347470105454246",
+    "updateTime":  "2026-07-02T12:18:12.197756Z",
+    "designTheme":  {
+                        "colorMode":  "LIGHT",
+                        "deviceType":  null,
+                        "primaryColor":  "#3b82f6"
+                    },
+    "screens":  [
+                    {
+                        "screenTitle":  "나의 할일 - 메인",
+                        "screenId":  "16d7b2a1b826448bb8d4dc42b803d194",
+                        "htmlFile":  "screen_main.html",
+                        "screenshotFile":  "assets/screen_main.png",
+                        "deviceType":  "MOBILE",
+                        "width":  "780",
+                        "height":  "1768"
+                    },
+                    {
+                        "screenTitle":  "나의 할일 - 빈 상태",
+                        "screenId":  "09cd822484d548b3a679c319414a0083",
+                        "htmlFile":  "screen_empty.html",
+                        "screenshotFile":  "assets/screen_empty.png",
+                        "deviceType":  "MOBILE",
+                        "width":  "780",
+                        "height":  "1768"
+                    },
+                    {
+                        "screenTitle":  "나의 할일 - 삭제 확인 다이얼로그",
+                        "screenId":  "94a1b383b71a4f8c8757b5b8fd606c6d",
+                        "htmlFile":  "screen_dialog.html",
+                        "screenshotFile":  "assets/screen_dialog.png",
+                        "deviceType":  "MOBILE",
+                        "width":  "780",
+                        "height":  "1768"
+                    }
+                ],
+    "exportedAt":  "2026-07-02T22:27:00.9944867+09:00"
+}

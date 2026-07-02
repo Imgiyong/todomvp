@@ -1,0 +1,188 @@
+<!DOCTYPE html><html class="light" lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#e6eeff",
+                    "surface": "#f8f9ff",
+                    "on-tertiary-fixed-variant": "#723600",
+                    "surface-dim": "#d0dbed",
+                    "on-surface": "#121c2a",
+                    "inverse-primary": "#adc6ff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-tertiary-fixed": "#311400",
+                    "on-error-container": "#93000a",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-secondary-fixed": "#001a42",
+                    "on-primary-fixed-variant": "#004395",
+                    "primary-container": "#2170e4",
+                    "inverse-surface": "#27313f",
+                    "on-background": "#121c2a",
+                    "secondary": "#495e8a",
+                    "background": "#f8f9ff",
+                    "surface-container-high": "#dee9fc",
+                    "secondary-container": "#b6ccff",
+                    "on-surface-variant": "#424754",
+                    "on-error": "#ffffff",
+                    "primary": "#0058be",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-tint": "#005ac2",
+                    "tertiary-container": "#b75b00",
+                    "surface-variant": "#d9e3f6",
+                    "surface-container-highest": "#d9e3f6",
+                    "tertiary-fixed-dim": "#ffb786",
+                    "secondary-fixed-dim": "#b1c6f9",
+                    "tertiary-fixed": "#ffdcc6",
+                    "outline-variant": "#c2c6d6",
+                    "on-secondary-container": "#405682",
+                    "error-container": "#ffdad6",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#d8e2ff",
+                    "on-primary-fixed": "#001a42",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-container": "#fffbff",
+                    "tertiary": "#924700",
+                    "on-primary": "#ffffff",
+                    "outline": "#727785",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-container": "#fefcff",
+                    "on-secondary-fixed-variant": "#304671",
+                    "primary-fixed": "#d8e2ff",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "inline-gap": "0.5rem",
+                    "container-margin": "1rem",
+                    "stack-gap": "0.75rem",
+                    "section-padding": "1.5rem"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .empty-state-bounce {
+            animation: softBounce 3s ease-in-out infinite;
+        }
+        @keyframes softBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface flex items-center justify-between px-section-padding w-full h-16 fixed top-0 z-50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary font-headline-md text-headline-md" data-icon="checklist">checklist</span>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface dark:text-on-surface">나의 할일</h1>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-high transition-colors rounded-full" data-icon="more_vert">more_vert</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col items-center justify-center px-section-padding relative">
+<!-- Background Atmospheric Element (Subtle Gradient) -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden">
+<div class="absolute -top-24 -left-24 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+</div>
+<!-- Empty State Container -->
+<div class="text-center z-10 space-y-6 max-w-sm">
+<div class="empty-state-bounce">
+<div class="inline-flex items-center justify-center w-32 h-32 rounded-full bg-surface-container-high mb-2">
+<span class="material-symbols-outlined text-primary text-[64px]" data-icon="list_alt">list_alt</span>
+</div>
+</div>
+<div class="space-y-2">
+<h2 class="font-headline-md text-headline-md text-on-surface">아직 할일이 없습니다</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">첫 번째 할일을 추가해 보세요</p>
+</div>
+</div>
+</main>
+<!-- Bottom Input & Navigation Section -->
+<footer class="w-full bg-surface pb-safe pt-4 px-section-padding space-y-6">
+<!-- Input Task Section (Screen 2 Component) -->
+<div class="relative group">
+<div class="flex items-center gap-2 p-2 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] focus-within:ring-2 focus-within:ring-primary transition-all duration-200">
+<input class="flex-grow bg-transparent border-none focus:ring-0 px-3 py-2 font-body-md text-on-surface placeholder:text-on-surface-variant/50" placeholder="새로운 할일 입력..." type="text">
+<button class="bg-primary text-on-primary px-5 py-2 rounded-lg font-label-md text-label-md active:scale-95 transition-transform duration-100 flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                    추가
+                </button>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="flex justify-around items-center py-2">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="list_alt">list_alt</span>
+<span class="font-label-md text-label-md">할일</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 hover:bg-surface-container-low transition-colors active:scale-90 transition-transform rounded-full" href="#">
+<span class="material-symbols-outlined text-headline-md" data-icon="check_circle">check_circle</span>
+<span class="font-label-md text-label-md">완료</span>
+</a>
+</nav>
+</footer>
+<script>
+        // Simple micro-interaction for the input field focus
+        const inputField = document.querySelector('input');
+        const inputContainer = inputField.parentElement;
+
+        inputField.addEventListener('focus', () => {
+            inputContainer.classList.add('shadow-lg');
+            inputContainer.style.borderColor = 'var(--primary)';
+        });
+
+        inputField.addEventListener('blur', () => {
+            inputContainer.classList.remove('shadow-lg');
+            inputContainer.style.borderColor = '';
+        });
+
+        // Add task logic (Mock)
+        const addButton = document.querySelector('button.bg-primary');
+        addButton.addEventListener('click', () => {
+            if (inputField.value.trim() !== "") {
+                console.log("New task added:", inputField.value);
+                inputField.value = "";
+                // Logic to transition out of empty state would go here
+            }
+        });
+    </script>
+
+
+</body></html>

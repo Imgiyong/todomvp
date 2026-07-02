@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#004395",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#eff4ff",
+                        "on-secondary-container": "#405682",
+                        "on-surface-variant": "#424754",
+                        "on-surface": "#121c2a",
+                        "on-primary-fixed": "#001a42",
+                        "inverse-primary": "#adc6ff",
+                        "on-tertiary-fixed": "#311400",
+                        "on-primary-container": "#fefcff",
+                        "outline-variant": "#c2c6d6",
+                        "surface-variant": "#d9e3f6",
+                        "secondary-fixed-dim": "#b1c6f9",
+                        "on-background": "#121c2a",
+                        "tertiary": "#924700",
+                        "primary-container": "#2170e4",
+                        "tertiary-fixed-dim": "#ffb786",
+                        "inverse-surface": "#27313f",
+                        "surface-container-high": "#dee9fc",
+                        "on-tertiary-fixed-variant": "#723600",
+                        "surface-dim": "#d0dbed",
+                        "error": "#ba1a1a",
+                        "outline": "#727785",
+                        "on-tertiary-container": "#fffbff",
+                        "surface-tint": "#005ac2",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#adc6ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-secondary-fixed-variant": "#304671",
+                        "secondary-fixed": "#d8e2ff",
+                        "primary-fixed": "#d8e2ff",
+                        "on-secondary-fixed": "#001a42",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#b6ccff",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#495e8a",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#d9e3f6",
+                        "surface-container": "#e6eeff",
+                        "primary": "#0058be",
+                        "surface-bright": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#b75b00",
+                        "background": "#f8f9ff",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-padding": "1.5rem",
+                        "inline-gap": "0.5rem",
+                        "stack-gap": "0.75rem",
+                        "container-margin": "1rem"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #f8f9ff;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .task-card-shadow {
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .strikethrough {
+            text-decoration: line-through;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface docked full-width top-0 z-40 sticky">
+<div class="flex items-center justify-between px-section-padding w-full h-16">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="checklist">checklist</span>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface dark:text-on-surface">나의 할일</h1>
+</div>
+<button class="hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors active:scale-95 duration-100 p-2 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</header>
+<main class="flex-grow px-container-margin pt-4 pb-24 max-w-2xl mx-auto w-full">
+<!-- Input Section -->
+<div class="mb-8">
+<div class="flex gap-2 p-1.5 bg-surface-container-lowest rounded-xl border border-outline-variant focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all shadow-sm">
+<input class="flex-grow bg-transparent border-none focus:ring-0 px-3 py-2 font-body-md text-on-surface placeholder:text-outline" placeholder="할 일을 입력하세요" type="text"/>
+<button class="bg-primary text-on-primary px-5 py-2 rounded-lg font-label-md hover:opacity-90 active:scale-95 transition-all">
+                    추가
+                </button>
+</div>
+</div>
+<!-- Task List -->
+<div class="space-y-3">
+<!-- Item 1 (Active) -->
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-outline-variant/30 task-card-shadow transition-transform active:scale-[0.99]">
+<div class="flex items-center gap-3">
+<button class="w-6 h-6 rounded-full border-2 border-outline hover:border-primary transition-colors flex items-center justify-center">
+<span class="hidden material-symbols-outlined text-primary text-sm" data-icon="check" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check</span>
+</button>
+<span class="font-body-lg text-on-surface">우유 사기</span>
+</div>
+<button class="text-error hover:bg-error-container/20 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+<!-- Item 2 (Active) -->
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-outline-variant/30 task-card-shadow transition-transform active:scale-[0.99]">
+<div class="flex items-center gap-3">
+<button class="w-6 h-6 rounded-full border-2 border-outline hover:border-primary transition-colors flex items-center justify-center">
+<span class="hidden material-symbols-outlined text-primary text-sm" data-icon="check" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check</span>
+</button>
+<span class="font-body-lg text-on-surface">디자인 시안 검토하기</span>
+</div>
+<button class="text-error hover:bg-error-container/20 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+<!-- Item 3 (Completed) -->
+<div class="flex items-center justify-between p-4 bg-surface/50 rounded-xl border border-outline-variant/10 task-card-shadow/50 transition-opacity opacity-70">
+<div class="flex items-center gap-3">
+<button class="w-6 h-6 rounded-full bg-primary border-2 border-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[16px]" data-icon="check" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check</span>
+</button>
+<span class="font-body-lg text-on-surface-variant strikethrough">운동하기</span>
+</div>
+<button class="text-error/60 hover:bg-error-container/20 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Empty State Illustration Placeholder (Only shown when list is empty) -->
+<div class="hidden flex-col items-center justify-center py-12 text-center" id="empty-state">
+<div class="w-48 h-48 mb-4 opacity-20">
+<img class="w-full h-full object-contain" data-alt="A clean minimalist digital illustration of a clipboard with a checkmark, surrounded by floating geometric shapes in a soft blue and white palette. High-key lighting, corporate modern style, emphasizing productivity and clarity on a light-mode background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBzHK4Ft7sDHKlqBIBfR6Kln2s9gySR-UV1Rrw4ePa3KtAPKCK36zKdTMC7J1ZmYYGWT2m5ktvtDGOWZ9zbBrHFw2h6DYN-9dajUrNbDLl2VBZ8gMUCg-Zqdm8XulGPOgWDQ_UN6jmcIIxU6VEEIJm4H5h9HcL7z_0Pw7_BFrKEkU5qNNAWWhtgR_F3pv-5r3OdvKmS9iknmSb-eIiOy6PfxpGlu4-puJddsa40Eqmq0WWeyI_HhHn0t-3PPo6fnsfkRimCEqEhA"/>
+</div>
+<h3 class="font-headline-md text-on-surface">할 일이 없습니다</h3>
+<p class="font-body-md text-on-surface-variant mt-2">새로운 할 일을 추가하여 하루를 계획해보세요!</p>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface dark:bg-surface shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="list_alt">list_alt</span>
+<span class="font-label-md text-label-md">할일</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-low dark:hover:bg-surface-container-low active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+<span class="font-label-md text-label-md">완료</span>
+</button>
+</nav>
+<script>
+        // Simple micro-interaction for checkboxes
+        document.querySelectorAll('button.w-6.h-6').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const icon = this.querySelector('.material-symbols-outlined');
+                const text = this.nextElementSibling;
+                const container = this.closest('.flex.items-center.justify-between');
+
+                if (icon.classList.contains('hidden')) {
+                    // Check
+                    icon.classList.remove('hidden');
+                    this.classList.add('bg-primary', 'border-primary');
+                    text.classList.add('strikethrough', 'text-on-surface-variant');
+                    container.classList.add('opacity-70', 'bg-surface/50');
+                } else {
+                    // Uncheck
+                    icon.classList.add('hidden');
+                    this.classList.remove('bg-primary', 'border-primary');
+                    text.classList.remove('strikethrough', 'text-on-surface-variant');
+                    container.classList.remove('opacity-70', 'bg-surface/50');
+                }
+            });
+        });
+
+        // Delete micro-interaction
+        document.querySelectorAll('button.text-error').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const container = this.closest('.flex.items-center.justify-between');
+                container.style.opacity = '0';
+                container.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    container.remove();
+                }, 200);
+            });
+        });
+    </script>
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-on-background/40 backdrop-blur-sm transition-opacity" id="delete-dialog-overlay">
+<div class="bg-surface-container-lowest rounded-xl shadow-xl max-w-[320px] w-[90%] p-6 flex flex-col gap-4 transform transition-all">
+<div class="flex flex-col gap-2">
+<h2 class="font-headline-md text-on-surface font-bold">할일 삭제</h2>
+<p class="font-body-md text-on-surface-variant">
+                이 할일을 삭제할까요?<br/>
+                삭제 후에는 복구할 수 없습니다.
+            </p>
+</div>
+<div class="flex gap-3 mt-2">
+<button class="flex-1 py-2.5 rounded-lg border border-outline-variant font-label-md text-on-surface-variant hover:bg-surface-container-low active:scale-95 transition-all">
+                취소
+            </button>
+<button class="flex-1 py-2.5 rounded-lg bg-error text-on-error font-label-md hover:opacity-90 active:scale-95 transition-all">
+                삭제
+            </button>
+</div>
+</div>
+</div></body></html>
