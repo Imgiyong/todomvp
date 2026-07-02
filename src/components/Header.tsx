@@ -7,7 +7,7 @@ export function Header() {
             checklist
           </span>
           <h1 className="text-headline-md font-bold text-on-surface dark:text-on-surface">
-            나의 할일
+            My Todo
           </h1>
         </div>
         <button
